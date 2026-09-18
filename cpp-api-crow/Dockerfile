@@ -34,10 +34,8 @@ FROM scratch AS final
 
 WORKDIR /app
 
-# CA-Zertifikate aus dem Builder kopieren (falls die App HTTPS/SSL nutzt)
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
-# Statisch kompiliertes Binary kopieren
 COPY --from=builder /cpp-app/app /app/app
 
 EXPOSE 10000
