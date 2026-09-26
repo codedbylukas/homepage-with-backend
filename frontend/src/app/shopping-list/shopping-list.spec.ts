@@ -37,4 +37,53 @@ describe('ShoppingList', () => {
   it('defined function deleteItem', async () => {
     expect(component.deleteItem).toBeDefined();
   });
+
+  it('should load and display shopping list items', () => {
+    const httpMock = TestBed.inject(HttpTestingController);
+    component.loadNewItems();
+    const request = httpMock.expectOne(component.apiEndpoint);
+    const items = [{ id: 1, name: 'Milch' }];
+
+    request.flush(items);
+
+    expect(component.items).toEqual(items);
+  });
+
+  it('should add a prompted item and reload the list', () => {
+    const promptSpy = vi.spyOn(window, 'prompt').mockReturnValue('Brot');
+    const httpMock = TestBed.inject(HttpTestingController);
+    const loadSpy = vi.spyOn(component, 'loadNewItems');
+
+    component.addItem();
+    const request = httpMock.expectOne((request) => request.url === `${component.apiEndpoint}?name=Brot`);
+    expect(request.request.method).toBe('POST');
+    request.flush({ id: 2, name: 'Brot' });
+
+    expect(promptSpy).toHaveBeenCalled();
+    expect(loadSpy).toHaveBeenCalled();
+    promptSpy.mockRestore();
+  });
+
+  it('should not send a request when adding an item is cancelled', () => {
+    const promptSpy = vi.spyOn(window, 'prompt').mockReturnValue(null);
+    const httpMock = TestBed.inject(HttpTestingController);
+
+    component.addItem();
+
+    expect(promptSpy).toHaveBeenCalled();
+    httpMock.expectNone(() => true);
+    promptSpy.mockRestore();
+  });
+
+  it('should delete an item and reload the list', () => {
+    const httpMock = TestBed.inject(HttpTestingController);
+    const loadSpy = vi.spyOn(component, 'loadNewItems');
+
+    component.deleteItem(3);
+    const request = httpMock.expectOne(`${component.apiEndpoint}/3`);
+    expect(request.request.method).toBe('DELETE');
+    request.flush(null);
+
+    expect(loadSpy).toHaveBeenCalled();
+  });
 });
