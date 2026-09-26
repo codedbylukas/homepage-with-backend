@@ -2,9 +2,9 @@ let useDebugUrl: boolean = false;
 
 export class ApIModule {
   static getApiEndpointRandom(): string {
-    let randomNumberApiEndpoint: string = '/api/cs/random';
+    let randomNumberApiEndpoint: string = '/api/cpp/random';
     if (useDebugUrl) {
-      randomNumberApiEndpoint = 'http://localhost:5202/api/cs/random';
+      randomNumberApiEndpoint = 'http://localhost:5202/api/cpp/random';
     }
     return randomNumberApiEndpoint;
   }
