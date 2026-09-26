@@ -12,7 +12,7 @@ describe('NumberGessingGame', () => {
       providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     });
     httpMock = TestBed.inject(HttpTestingController);
-    const req = httpMock.expectOne((request) => request.url.includes('/api/cs/random'));
+    const req = httpMock.expectOne((request) => request.url.includes('/api/cpp/random'));
     req.flush({ randomNumber: 42 });
     return result;
   }
@@ -60,3 +60,4 @@ describe('NumberGessingGame', () => {
     expect(screen.getByText('Guess')).toBeTruthy();
   });
 });
+

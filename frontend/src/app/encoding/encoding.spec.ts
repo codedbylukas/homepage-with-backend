@@ -21,4 +21,7 @@ describe('Encoding', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+    it('defined function loadEncoding', async () => {
+    expect(component.loadEncoding).toBeDefined();
+  });
 });

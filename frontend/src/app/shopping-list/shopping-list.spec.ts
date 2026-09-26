@@ -30,4 +30,13 @@ describe('ShoppingList', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('defined function loadNewItems', async () => {
+    expect(component.loadNewItems).toBeDefined();
+  });
+  it('defined function addItem', async () => {
+    expect(component.addItem).toBeDefined();
+  });
+  it('defined function deleteItem', async () => {
+    expect(component.deleteItem).toBeDefined();
+  });
 });
