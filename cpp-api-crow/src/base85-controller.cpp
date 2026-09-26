@@ -1,3 +1,4 @@
+#include "base85-controller.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,7 +8,6 @@
 #include <map>
 #include <cctype>
 #include "crow.h"
-#include "base85-controller.hpp"
 
 std::string base85_encode(const std::string& in) {
     std::string out;

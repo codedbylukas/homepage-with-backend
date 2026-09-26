@@ -18,11 +18,9 @@ describe('ShoppingList', () => {
     fixture = TestBed.createComponent(ShoppingList);
     component = fixture.componentInstance;
 
-    // Für Http-mocking
     fixture.detectChanges();
     const httpMock = TestBed.inject(HttpTestingController);
     httpMock.expectOne(() => true).flush([]);
-    // bis hier für http-mocking
 
     await fixture.whenStable();
   });

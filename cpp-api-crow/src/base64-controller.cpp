@@ -1,10 +1,10 @@
+#include "base64-controller.hpp"
 #include <iostream>
 #include "crow.h"
 #include <string>
 #include <vector>
 #include <iomanip>
 #include <sstream>
-#include "base64-controller.hpp"
 
 const std::string B64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

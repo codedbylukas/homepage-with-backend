@@ -1,6 +1,6 @@
+#include "random-controller.hpp"
 #include <random>
 #include "crow.h"
-#include "random-controller.hpp"
 
 int get_random_number(int min, int max) {
     thread_local std::mt19937 gen(std::random_device{}());
