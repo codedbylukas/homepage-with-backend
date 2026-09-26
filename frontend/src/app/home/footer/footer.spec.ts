@@ -10,4 +10,9 @@ describe('Footer', () => {
     await render(Footer);
     expect(screen.getByText('Licenses used')).toBeTruthy();
   });
+
+  it('should render the footer license text as a link', async () => {
+    await render(Footer);
+    expect(screen.getByRole('link', { name: 'Licenses used' })).toBeTruthy();
+  });
 });

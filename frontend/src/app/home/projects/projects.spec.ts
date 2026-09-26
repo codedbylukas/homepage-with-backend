@@ -15,4 +15,14 @@ describe('Projects', () => {
     await render(Projects);
     expect(screen.getByText('Einkaufsliste')).toBeTruthy();
   });
+
+  it('should show the encoding link text', async () => {
+    await render(Projects);
+    expect(screen.getByText('Encoding')).toBeTruthy();
+  });
+
+  it('should show all project links', async () => {
+    await render(Projects);
+    expect(screen.getAllByRole('link')).toHaveLength(3);
+  });
 });
