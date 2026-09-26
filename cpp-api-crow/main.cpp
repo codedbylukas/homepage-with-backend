@@ -9,6 +9,7 @@
 #include "include/rot13-controller.hpp"
 #include "include/base32-controller.hpp"
 #include "include/base85-controller.hpp"
+#include "random-controller.hpp"
 
 class FileLogger : public crow::ILogHandler {
 public:
@@ -59,6 +60,7 @@ int main() {
     setup_route_rot13(app);
     setup_route_base32(app);
     setup_route_base85(app);
+    setup_route_random_controller(app);
     
     std::cout << "Server started on port " << port << std::endl;
     app.port(port).multithreaded().run();
