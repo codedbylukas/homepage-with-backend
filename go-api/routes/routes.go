@@ -45,7 +45,7 @@ func SetupRoutes() error {
 		WriteTimeout:      10 * time.Second,
 		IdleTimeout:       60 * time.Second,
 	}
-	logger.Println("API is working on http://localhost:8080")
+	go logger.Println("API is working on http://localhost:8080")
 	if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return err
 	}

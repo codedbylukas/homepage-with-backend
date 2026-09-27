@@ -20,7 +20,7 @@ func Sha1Route(logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		inputData := r.FormValue("data")
 		if inputData == "" {
-			logger.Println("Missing parameters in Sha1Route")
+			go logger.Println("Missing parameters in Sha1Route")
 			http.Error(w, "Missing parameters", http.StatusBadRequest)
 			return
 		}

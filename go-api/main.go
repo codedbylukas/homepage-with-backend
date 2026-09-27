@@ -7,6 +7,6 @@ import (
 
 func main() {
 	if err := routes.SetupRoutes(); err != nil {
-		log.Fatal(err)
+		go log.Fatal(err)
 	}
 }

@@ -10,7 +10,7 @@ func writeJsonResponse(logger *log.Logger, w http.ResponseWriter, data interface
 	w.Header().Set("Content-Type", "application/json")
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		logger.Println("Error encoding JSON response: ", err)
+		go logger.Println("Error encoding JSON response: ", err)
 		http.Error(w, "Error encoding JSON response", http.StatusInternalServerError)
 		return
 	}

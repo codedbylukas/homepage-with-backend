@@ -16,7 +16,7 @@ func createMd5Hash(logger *log.Logger, text string) string {
 	hasher := md5.New()
 	_, err := io.WriteString(hasher, text)
 	if err != nil {
-		logger.Println("Error creating MD5 hash: ", err)
+		go logger.Println("Error creating MD5 hash: ", err)
 	}
 	return fmt.Sprintf("%x", hasher.Sum(nil))
 }
@@ -25,7 +25,7 @@ func Md5Route(logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		inputData := r.FormValue("data")
 		if inputData == "" {
-			logger.Println("Missing parameters in Md5Route")
+			go logger.Println("Missing parameters in Md5Route")
 			http.Error(w, "Missing parameters", http.StatusBadRequest)
 			return
 		}

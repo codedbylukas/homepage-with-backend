@@ -15,7 +15,7 @@ func Sha256Route(logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		inputData := r.FormValue("data")
 		if inputData == "" {
-			logger.Println("Missing parameters in Sha256Route")
+			go logger.Println("Missing parameters in Sha256Route")
 			http.Error(w, "Missing parameters", http.StatusBadRequest)
 			return
 		}

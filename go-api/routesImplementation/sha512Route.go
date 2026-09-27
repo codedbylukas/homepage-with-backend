@@ -15,7 +15,7 @@ func Sha512Route(logger *log.Logger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		inputData := r.FormValue("data")
 		if inputData == "" {
-			logger.Println("Missing parameters in Sha512Route")
+			go logger.Println("Missing parameters in Sha512Route")
 			http.Error(w, "Missing parameters", http.StatusBadRequest)
 			return
 		}
