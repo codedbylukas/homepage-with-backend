@@ -1,0 +1,27 @@
+2026/09/27 05:01:05 API is working on http://localhost:8080
+2026/09/27 05:05:30 API is working on http://localhost:8080
+2026/09/27 05:05:30 listen tcp :8080: bind: address already in use
+2026/09/27 05:05:56 API is working on http://localhost:8080
+2026/09/27 05:06:29 API is working on http://localhost:8080
+2026/09/27 05:06:29 listen tcp :8080: bind: address already in use
+2026/09/27 05:07:51 API is working on http://localhost:8080
+2026/09/27 05:07:51 listen tcp :8080: bind: address already in use
+2026/09/27 05:07:54 API is working on http://localhost:8080
+2026/09/27 05:07:54 listen tcp :8080: bind: address already in use
+2026/09/27 05:08:11 "POST http://localhost:8080/api/go/hash/sha512 HTTP/1.1" from [::1]:46482 - 200 139B in 146.567µs
+2026/09/27 05:08:12 "POST http://localhost:8080/api/go/hash/sha512 HTTP/1.1" from [::1]:33896 - 200 139B in 104.107µs
+2026/09/27 05:08:13 "POST http://localhost:8080/api/go/hash/sha512 HTTP/1.1" from [::1]:33906 - 200 139B in 108.973µs
+2026/09/27 05:08:14 "POST http://localhost:8080/api/go/hash/sha512 HTTP/1.1" from [::1]:33922 - 200 139B in 50.921µs
+2026/09/27 05:08:28 "POST http://localhost:8080/api/go/hash/sha512 HTTP/1.1" from [::1]:52738 - 200 139B in 315.244µs
+2026/09/27 05:08:33 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:37406 - 200 75B in 44.764µs
+2026/09/27 05:08:36 "POST http://localhost:8080/api/go/hash/sha512 HTTP/1.1" from [::1]:37414 - 200 139B in 44.403µs
+2026/09/27 05:08:40 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:37426 - 200 75B in 93.731µs
+2026/09/27 05:08:40 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:37438 - 200 75B in 44.162µs
+2026/09/27 05:08:40 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:37450 - 200 75B in 96.626µs
+2026/09/27 05:08:42 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:37452 - 200 75B in 40.737µs
+2026/09/27 05:08:42 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:37456 - 200 75B in 40.147µs
+2026/09/27 05:08:42 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:43044 - 200 75B in 227.63µs
+2026/09/27 05:08:42 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:43054 - 200 75B in 40.056µs
+2026/09/27 05:08:43 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:43062 - 200 75B in 41.257µs
+2026/09/27 05:08:44 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:43078 - 200 75B in 49.049µs
+2026/09/27 05:08:44 "POST http://localhost:8080/api/go/hash/md5 HTTP/1.1" from [::1]:43086 - 200 75B in 64.931µs

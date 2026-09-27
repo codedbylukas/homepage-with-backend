@@ -1,0 +1,39 @@
+@use '../slide-in.sass';
+@use '../center.sass';
+
+.main {
+  margin: 20px;
+}
+
+select {
+  border: none;
+  padding: 20px;
+  background-color: rgba(40, 25, 124, 0.582);
+  margin: 10px;
+  font-size: 20px;
+  color: white;
+  border-radius: 20%;
+}
+
+input {
+  padding: 20px;
+  font-size: 20px;
+  border-radius: 20%;
+  margin: 20px;
+  background-color: rgba(40, 25, 124, 0.582);
+  color: white;
+  border: none;
+}
+
+button {
+  font-size: 20px;
+  padding: 20px;
+  background-color: rgba(40, 25, 124, 0.582);
+  color: white;
+  border: none;
+  border-radius: 20%;
+}
+
+h1 {
+  font-size: 40px;
+}

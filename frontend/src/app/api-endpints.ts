@@ -1,5 +1,4 @@
 let useDebugUrl: boolean = false;
-
 export class ApIModule {
   static getApiEndpointRandom(): string {
     let randomNumberApiEndpoint: string = '/api/cpp/random';
@@ -14,6 +13,9 @@ export class ApIModule {
       shoppingListGetApiEndpoint = 'http://localhost:5202/api/cs/shoppinglist';
     }
     return shoppingListGetApiEndpoint;
+  }
+  static getApiHash(): string {
+    return '/api/go/hash';
   }
   static getApiEncode(): string {
     let encodeApiEndpoint: string = '/api/cpp/encode';

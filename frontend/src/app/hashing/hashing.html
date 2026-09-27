@@ -1,0 +1,27 @@
+<div class="center-text slide-in main">
+  <h1>Hashing</h1>
+  <p>
+    Willkommen in dem hashing teil der Webseite. Das ist dazu da, um hashing zu machen. Siehe was
+    bis jetzt alles schon sehen kannst und welche hashing Algorythmen funktionieren.
+  </p>
+  <br />
+  <select name="encode-algo" id="encode-algo" #algorithmSelect>
+    <option value="sha512">sha512</option>
+    <option value="md5">md5</option>
+  </select>
+  <br />
+  <label for="encode-text">Bitte gib mir den Text an, den ich convertieren soll.: </label>
+  <br />
+  <input
+    type="text"
+    (keydown.enter)="loadHash()"
+    placeholder="Text eingeben..."
+    id="encode-text"
+    #textInput
+  />
+  <br />
+  <button (click)="loadHash()">Convertieren</button>
+  <p>{{ result.converted }}</p>
+
+  <app-home-btn></app-home-btn>
+</div>
