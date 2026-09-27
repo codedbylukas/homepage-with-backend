@@ -52,6 +52,9 @@ describe('ShoppingList', () => {
     expect(typeof component.deleteItem).toBe('function');
   });
 
+  it('should display Willkommen auf deiner Einkaufsliste in template', () => {
+    expect(fixture.nativeElement.textContent).toContain('Willkommen auf deiner Einkaufsliste');
+  });
   it('should load and display shopping list items', () => {
     const httpMock = TestBed.inject(HttpTestingController);
     component.loadNewItems();
