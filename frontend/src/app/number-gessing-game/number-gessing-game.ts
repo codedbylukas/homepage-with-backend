@@ -33,7 +33,7 @@ export class NumberGessingGame implements OnInit {
     this.http.get<any>(this.apiEndpoint).subscribe({
       next: (response) => {
         this.data = response;
-        if (response && response.randomNumber) {
+        if (typeof response?.randomNumber === 'number') {
           this.localRandomNumber = response.randomNumber;
         }
       },

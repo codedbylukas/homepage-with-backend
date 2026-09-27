@@ -34,4 +34,20 @@ describe('Home', () => {
     expect(screen.getByText('Zahl erraten game')).toBeTruthy();
     expect(screen.getByText('Licenses used')).toBeTruthy();
   });
+
+  it('should expose project destinations and the license page from the home page', async () => {
+    TestBed.resetTestingModule();
+    await render(Home, { providers: [provideRouter([])] });
+
+    expect(screen.getByRole('link', { name: 'Zahl erraten game' }).getAttribute('href')).toBe(
+      '/number-guessing-game',
+    );
+    expect(screen.getByRole('link', { name: 'Einkaufsliste' }).getAttribute('href')).toBe(
+      '/shopping-list',
+    );
+    expect(screen.getByRole('link', { name: 'Encoding' }).getAttribute('href')).toBe('/encoding');
+    expect(screen.getByRole('link', { name: 'Licenses used' }).getAttribute('href')).toBe(
+      '/license',
+    );
+  });
 });

@@ -15,4 +15,9 @@ describe('Footer', () => {
     await render(Footer);
     expect(screen.getByRole('link', { name: 'Licenses used' })).toBeTruthy();
   });
+
+  it('should link the license text to the license page', async () => {
+    await render(Footer);
+    expect(screen.getByRole('link', { name: 'Licenses used' }).getAttribute('href')).toBe('/license');
+  });
 });

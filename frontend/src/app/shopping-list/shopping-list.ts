@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApIModule } from '../api-endpints';
@@ -44,15 +44,17 @@ export class ShoppingList implements OnInit {
       if (this.itemName === null) {
         return;
       }
-      this.http.post(`${this.apiEndpoint}?name=${this.itemName}`, {}).subscribe({
-        next: (response) => {
-          console.log('Item erfolgreich hinzugefügt: ', response);
-          this.loadNewItems();
-        },
-        error: (err) => {
-          console.error('Fehler beim Hinzufügen des Items:', err);
-        },
-      });
+      this.http
+        .post(this.apiEndpoint, {}, { params: new HttpParams().set('name', this.itemName) })
+        .subscribe({
+          next: (response) => {
+            console.log('Item erfolgreich hinzugefügt: ', response);
+            this.loadNewItems();
+          },
+          error: (err) => {
+            console.error('Fehler beim Hinzufügen des Items:', err);
+          },
+        });
     } catch (e) {
       console.log('Fehler beim hinzufügen der Items' + e);
     }

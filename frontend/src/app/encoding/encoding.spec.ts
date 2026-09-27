@@ -54,6 +54,81 @@ describe('Encoding', () => {
     expect(component.result.conveted).toBe('legacy-result');
   });
 
+  const algorithms = ['base64', 'hex', 'rot13', 'base32', 'base85'];
+  const modes = ['from', 'to'];
+
+  algorithms.forEach((algorithm) => {
+    modes.forEach((mode) => {
+      it(`should request ${mode}-${algorithm} and store the converted value`, () => {
+        const httpMock = TestBed.inject(HttpTestingController);
+        (document.getElementById('encode-algo') as HTMLSelectElement).value = algorithm;
+        (document.getElementById('encode-mode') as HTMLSelectElement).value = mode;
+        (document.getElementById('encode-text') as HTMLInputElement).value = 'payload';
+
+        component.loadEncoding();
+
+        const request = httpMock.expectOne(`/api/cpp/encode/${mode}-${algorithm}/payload`);
+        expect(request.request.method).toBe('GET');
+        request.flush({ converted: `${mode}:${algorithm}` });
+
+        expect(component.result.conveted).toBe(`${mode}:${algorithm}`);
+      });
+    });
+  });
+
+  it('should URL-encode spaces, reserved characters, and Unicode in the input', () => {
+    const httpMock = TestBed.inject(HttpTestingController);
+    (document.getElementById('encode-text') as HTMLInputElement).value = 'Grüße /?&#%';
+
+    component.loadEncoding();
+
+    const request = httpMock.expectOne(
+      '/api/cpp/encode/from-base64/Gr%C3%BC%C3%9Fe%20%2F%3F%26%23%25',
+    );
+    request.flush({ converted: 'encoded' });
+
+    expect(component.result.conveted).toBe('encoded');
+  });
+
+  it('should prefer converted when both response properties are present', () => {
+    const httpMock = TestBed.inject(HttpTestingController);
+    component.loadEncoding();
+    const request = httpMock.expectOne((request) => request.url.includes('/api/cpp/encode/'));
+
+    request.flush({ converted: 'current-result', conveted: 'legacy-result' });
+
+    expect(component.result.conveted).toBe('current-result');
+  });
+
+  it('should preserve the previous result when the API request fails', () => {
+    const httpMock = TestBed.inject(HttpTestingController);
+    component.result = { conveted: 'previous-result' };
+    component.loadEncoding();
+    const request = httpMock.expectOne((request) => request.url.includes('/api/cpp/encode/'));
+
+    request.flush('server error', { status: 500, statusText: 'Server Error' });
+
+    expect(component.result.conveted).toBe('previous-result');
+  });
+
+  it('should submit through both the button and Enter key and render the result', () => {
+    const httpMock = TestBed.inject(HttpTestingController);
+    (document.getElementById('encode-text') as HTMLInputElement).value = 'button input';
+    (fixture.nativeElement.querySelector('button') as HTMLButtonElement).click();
+
+    const buttonRequest = httpMock.expectOne('/api/cpp/encode/from-base64/button%20input');
+    buttonRequest.flush({ converted: 'button result' });
+    expect(fixture.nativeElement.textContent).toContain('button result');
+
+    const input = document.getElementById('encode-text') as HTMLInputElement;
+    input.value = 'keyboard input';
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+    const keyboardRequest = httpMock.expectOne('/api/cpp/encode/from-base64/keyboard%20input');
+    keyboardRequest.flush({ converted: 'keyboard result' });
+    expect(fixture.nativeElement.textContent).toContain('keyboard result');
+  });
+
   it('the text Encoding should be in the HTML template', () => {
     expect(fixture.nativeElement.textContent).toContain('Encoding');
   });

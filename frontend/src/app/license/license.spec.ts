@@ -38,4 +38,9 @@ describe('License', () => {
     const homeLink = fixture.nativeElement.querySelector('a');
     expect(homeLink?.textContent.trim()).toBe('Home');
   });
+
+  it('should navigate home from the license page', () => {
+    const homeLink = fixture.nativeElement.querySelector('a') as HTMLAnchorElement;
+    expect(homeLink.getAttribute('href')).toBe('/');
+  });
 });

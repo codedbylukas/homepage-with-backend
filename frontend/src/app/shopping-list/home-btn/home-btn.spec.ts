@@ -28,4 +28,9 @@ describe('HomeBtn', () => {
     await render(HomeBtn, { providers: [provideRouter([])] });
     expect(screen.getByText('Home')).toBeTruthy();
   });
+
+  it('should link back to the root route', () => {
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('a')?.getAttribute('href')).toBe('/');
+  });
 });

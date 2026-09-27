@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/angular';
+import { fireEvent } from '@testing-library/dom';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
@@ -132,5 +133,65 @@ describe('NumberGessingGame', () => {
     expect(component.attempts).toBe(0);
     expect(component.gameWon).toBe(false);
     expect(component.localRandomNumber).toBe(7);
+  });
+
+  it('should accept zero as a valid random number from the API', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    component.localRandomNumber = 42;
+
+    component.loadNewNumber();
+    httpMock.expectOne(component.apiEndpoint).flush({ randomNumber: 0 });
+
+    expect(component.localRandomNumber).toBe(0);
+  });
+
+  it('should show low-guess feedback, attempt count, and win state in the UI', async () => {
+    const { fixture } = await setupComponent();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+
+    fireEvent.input(input, { target: { value: '41' } });
+    expect(fixture.componentInstance.guess).toBe(41);
+    fireEvent.click(button);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.wrong')?.textContent).toContain('zu niedrig');
+    expect(fixture.nativeElement.textContent).toContain('Anzahl der Versuche: 1');
+    expect(fixture.nativeElement.textContent).toContain('Letztes geratene Zahl ist: 41');
+
+    fireEvent.input(input, { target: { value: '42' } });
+    fireEvent.click(button);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.correct')?.textContent).toContain('Richtig!');
+    expect(fixture.nativeElement.textContent).toContain('Neues Spiel');
+  });
+
+  it('should fall back to a local number when the random-number API fails', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.42);
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    component.loadNewNumber();
+    httpMock.expectOne(component.apiEndpoint).flush('unavailable', {
+      status: 503,
+      statusText: 'Service Unavailable',
+    });
+
+    expect(component.localRandomNumber).toBe(42);
+    expect(errorSpy).toHaveBeenCalled();
+    randomSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('should submit a guess when Enter is pressed in the number input', async () => {
+    const { fixture } = await setupComponent();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = '42';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+    expect(fixture.componentInstance.gameWon).toBe(true);
+    expect(fixture.componentInstance.attempts).toBe(1);
   });
 });
