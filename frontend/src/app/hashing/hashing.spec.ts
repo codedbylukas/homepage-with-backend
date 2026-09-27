@@ -15,6 +15,7 @@ describe('Hashing', () => {
 
     fixture = TestBed.createComponent(Hashing);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
@@ -28,30 +29,24 @@ describe('Hashing', () => {
     expect(typeof component.loadHash).toBe('function');
   });
   it('should have the sha512 text in the template', async () => {
-    TestBed.resetTestingModule();
-    await render(Hashing, { providers: [provideRouter([])] });
-    expect(screen.getByText('sha512')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('option[value="sha512"]')?.textContent.trim()).toBe(
+      'SHA-512',
+    );
   });
   it('should have the md5 text in the template', async () => {
-    TestBed.resetTestingModule();
-    await render(Hashing, { providers: [provideRouter([])] });
-    expect(screen.getByText('md5')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('option[value="md5"]')?.textContent.trim()).toBe(
+      'MD5',
+    );
   });
   it('should have the Hashing text in the template', async () => {
-    TestBed.resetTestingModule();
-    await render(Hashing, { providers: [provideRouter([])] });
-    expect(screen.getByText('Hashing')).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain('Hashing');
   });
   it('should have the Convertieren text in the template', async () => {
-    TestBed.resetTestingModule();
-    await render(Hashing, { providers: [provideRouter([])] });
-    expect(screen.getByText('Convertieren')).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain('Convertieren');
   });
   it('should render the input label text in the template', async () => {
-    TestBed.resetTestingModule();
-    await render(Hashing, { providers: [provideRouter([])] });
     expect(
-      screen.getByText(/Bitte gib mir den Text an, den ich convertieren soll\.:/i),
-    ).toBeTruthy();
+      fixture.nativeElement.textContent,
+    ).toMatch(/Bitte gib mir den Text an, den ich convertieren soll\.:/i);
   });
 });

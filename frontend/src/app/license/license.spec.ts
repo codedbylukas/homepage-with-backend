@@ -16,6 +16,7 @@ describe('License', () => {
 
     fixture = TestBed.createComponent(License);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
@@ -24,20 +25,17 @@ describe('License', () => {
   });
 
   it('should show the license heading', async () => {
-    TestBed.resetTestingModule();
-    await render(License, { providers: [provideRouter([])] });
-    expect(screen.getByText('This Licenses are used')).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain('This Licenses are used');
   });
 
   it('should show the Roboto license information', async () => {
-    TestBed.resetTestingModule();
-    await render(License, { providers: [provideRouter([])] });
-    expect(screen.getByText('Ich benutze Google Fonts Roboto (Apache 2.0 Lizenz)')).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain(
+      'Ich benutze Google Fonts Roboto (Apache 2.0 Lizenz)',
+    );
   });
 
   it('should show the home link', async () => {
-    TestBed.resetTestingModule();
-    await render(License, { providers: [provideRouter([])] });
-    expect(screen.getByRole('link', { name: 'Home' })).toBeTruthy();
+    const homeLink = fixture.nativeElement.querySelector('a');
+    expect(homeLink?.textContent.trim()).toBe('Home');
   });
 });
