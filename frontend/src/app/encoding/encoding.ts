@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { ApIModule } from '../api-endpints';
-import { HomeBtn } from './home-btn/home-btn';
+import { HomeBtn } from '../home-btn/home-btn';
 
 @Component({
   selector: 'app-encoding',

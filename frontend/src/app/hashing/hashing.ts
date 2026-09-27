@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { ApIModule } from '../api-endpints';
-import { HomeBtn } from './home-btn/home-btn';
+import { HomeBtn } from '../home-btn/home-btn';
 
 type HashResponse = {
   hash?: string;
