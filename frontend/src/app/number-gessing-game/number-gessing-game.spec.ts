@@ -33,16 +33,34 @@ describe('NumberGessingGame', () => {
     expect(component.loadNewNumber).toBeDefined();
   });
 
+  it('load new number should be a function', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    expect(typeof component.loadNewNumber).toBe('function');
+  });
+
   it('defined function check guess', async () => {
     const { fixture } = await setupComponent();
     const component = fixture.componentInstance;
     expect(component.checkGuess).toBeDefined();
   });
 
+  it('check guess should be a function', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    expect(typeof component.checkGuess).toBe('function');
+  });
+
   it('defined function reset game', async () => {
     const { fixture } = await setupComponent();
     const component = fixture.componentInstance;
     expect(component.resetGame).toBeDefined();
+  });
+
+  it('reset game should be a function', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    expect(typeof component.resetGame).toBe('function');
   });
 
   it('should create Zahlen erraten text', async () => {
@@ -116,4 +134,3 @@ describe('NumberGessingGame', () => {
     expect(component.localRandomNumber).toBe(7);
   });
 });
-

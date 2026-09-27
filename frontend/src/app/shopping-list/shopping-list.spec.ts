@@ -31,11 +31,25 @@ describe('ShoppingList', () => {
   it('defined function loadNewItems', async () => {
     expect(component.loadNewItems).toBeDefined();
   });
+
+  it('loadNewItems should be a function', async () => {
+    expect(typeof component.loadNewItems).toBe('function');
+  });
+
   it('defined function addItem', async () => {
     expect(component.addItem).toBeDefined();
   });
+
+  it('addItem should be a function', async () => {
+    expect(typeof component.addItem).toBe('function');
+  });
+
   it('defined function deleteItem', async () => {
     expect(component.deleteItem).toBeDefined();
+  });
+
+  it('deleteItem should be a function', async () => {
+    expect(typeof component.deleteItem).toBe('function');
   });
 
   it('should load and display shopping list items', () => {
@@ -55,7 +69,9 @@ describe('ShoppingList', () => {
     const loadSpy = vi.spyOn(component, 'loadNewItems');
 
     component.addItem();
-    const request = httpMock.expectOne((request) => request.url === `${component.apiEndpoint}?name=Brot`);
+    const request = httpMock.expectOne(
+      (request) => request.url === `${component.apiEndpoint}?name=Brot`,
+    );
     expect(request.request.method).toBe('POST');
     request.flush({ id: 2, name: 'Brot' });
 
