@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { render, screen } from '@testing-library/angular';
-
 import { License } from './license';
 import { provideRouter } from '@angular/router';
 

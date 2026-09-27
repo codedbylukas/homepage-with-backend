@@ -21,33 +21,37 @@ describe('Home', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  const displayedText: string[] = [
+    'Willkommen auf der Hauptseite',
+    'Zahl erraten game',
+    'Licenses used',
+  ];
+  for (let i = 0; i < displayedText.length; i++) {
+    let element: string = displayedText[i];
+    it(`the text "${element}" should be in the HTML template`, () => {
+      expect(fixture.nativeElement.textContent).toContain(element);
+    });
+  }
+  const projects: {
+    name: string;
+  }[] = [
+    { name: 'Zahl erraten game' },
+    { name: 'Einkaufsliste' },
+    { name: 'Encoding' },
+    { name: 'Licenses used' },
+  ];
 
-  it('should show the home page heading', async () => {
-    TestBed.resetTestingModule();
-    await render(Home, { providers: [provideRouter([])] });
-    expect(screen.getByText('Willkommen auf der Hauptseite')).toBeTruthy();
-  });
+  const routes: string[] = ['/number-guessing-game', '/shopping-list', '/encoding', '/license'];
 
-  it('should show the projects and footer sections', async () => {
-    TestBed.resetTestingModule();
-    await render(Home, { providers: [provideRouter([])] });
-    expect(screen.getByText('Zahl erraten game')).toBeTruthy();
-    expect(screen.getByText('Licenses used')).toBeTruthy();
-  });
-
-  it('should expose project destinations and the license page from the home page', async () => {
-    TestBed.resetTestingModule();
-    await render(Home, { providers: [provideRouter([])] });
-
-    expect(screen.getByRole('link', { name: 'Zahl erraten game' }).getAttribute('href')).toBe(
-      '/number-guessing-game',
-    );
-    expect(screen.getByRole('link', { name: 'Einkaufsliste' }).getAttribute('href')).toBe(
-      '/shopping-list',
-    );
-    expect(screen.getByRole('link', { name: 'Encoding' }).getAttribute('href')).toBe('/encoding');
-    expect(screen.getByRole('link', { name: 'Licenses used' }).getAttribute('href')).toBe(
-      '/license',
-    );
-  });
+  for (let i = 0; i < projects.length; i++) {
+    let usedRoute: string = routes[i];
+    let usedProject: {
+      name: string;
+    } = projects[i];
+    it(`should expose project destination ${usedRoute}`, async () => {
+      TestBed.resetTestingModule();
+      await render(Home, { providers: [provideRouter([])] });
+      expect(screen.getByRole('link', usedProject).getAttribute('href')).toBe(usedRoute);
+    });
+  }
 });

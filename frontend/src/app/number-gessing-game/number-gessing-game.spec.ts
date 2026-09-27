@@ -27,7 +27,6 @@ describe('NumberGessingGame', () => {
     const { fixture } = await setupComponent();
     expect(fixture.componentInstance).toBeTruthy();
   });
-
   it('defined function load new number', async () => {
     const { fixture } = await setupComponent();
     const component = fixture.componentInstance;
@@ -64,20 +63,18 @@ describe('NumberGessingGame', () => {
     expect(typeof component.resetGame).toBe('function');
   });
 
-  it('should create Zahlen erraten text', async () => {
-    await setupComponent();
-    expect(screen.getByText('Zahlen erraten')).toBeTruthy();
-  });
-
-  it('should create gessing text', async () => {
-    await setupComponent();
-    expect(screen.getByText('Versuche die Zahl zwischen 0 und 100 zu erraten')).toBeTruthy();
-  });
-
-  it('should create guess button test', async () => {
-    await setupComponent();
-    expect(screen.getByText('Guess')).toBeTruthy();
-  });
+  const displayedText: string[] = [
+    'Zahlen erraten',
+    'Versuche die Zahl zwischen 0 und 100 zu erraten',
+    'Guess',
+  ];
+  for (let i = 0; i < displayedText.length; i++) {
+    let element: string = displayedText[i];
+    it(`the text "${element}" should be in the HTML template`, async () => {
+      await setupComponent();
+      expect(screen.getByText(element)).toBeTruthy();
+    });
+  }
 
   it('should ask for a number when no guess was entered', async () => {
     const { fixture } = await setupComponent();

@@ -52,9 +52,14 @@ describe('ShoppingList', () => {
     expect(typeof component.deleteItem).toBe('function');
   });
 
-  it('should display Willkommen auf deiner Einkaufsliste in template', () => {
-    expect(fixture.nativeElement.textContent).toContain('Willkommen auf deiner Einkaufsliste');
-  });
+  const displayedText: string[] = ['Willkommen auf deiner Einkaufsliste'];
+
+  for (let i = 0; i < displayedText.length; i++) {
+    let element: string = displayedText[i];
+    it(`the text "${element}" should be in the HTML template`, () => {
+      expect(fixture.nativeElement.textContent).toContain(element);
+    });
+  }
   it('should load and display shopping list items', () => {
     const httpMock = TestBed.inject(HttpTestingController);
     component.loadNewItems();

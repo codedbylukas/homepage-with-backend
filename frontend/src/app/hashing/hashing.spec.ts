@@ -56,18 +56,17 @@ describe('Hashing', () => {
       'SHA-1',
     );
   });
-
-  it('should have the Hashing text in the template', async () => {
-    expect(fixture.nativeElement.textContent).toContain('Hashing');
-  });
-  it('should have the Convertieren text in the template', async () => {
-    expect(fixture.nativeElement.textContent).toContain('Convertieren');
-  });
-  it('should render the input label text in the template', async () => {
-    expect(fixture.nativeElement.textContent).toMatch(
-      /Bitte gib mir den Text an, den ich convertieren soll\.:/i,
-    );
-  });
+  const displayedText: string[] = [
+    'Hashing',
+    'Convertieren',
+    'Bitte gib mir den Text an, den ich convertieren soll',
+  ];
+  for (let i = 0; i < displayedText.length; i++) {
+    let element: string = displayedText[i];
+    it(`the text "${element}" should be in the HTML template`, () => {
+      expect(fixture.nativeElement.textContent).toContain(element);
+    });
+  }
 
   ['sha512', 'md5', 'sha256', 'sha1'].forEach((algorithm) => {
     it(`should POST the input as form data for ${algorithm}`, () => {

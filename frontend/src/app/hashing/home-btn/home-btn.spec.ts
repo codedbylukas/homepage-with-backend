@@ -24,9 +24,7 @@ describe('HomeBtn', () => {
   });
 
   it('should show the home link', async () => {
-    TestBed.resetTestingModule();
-    await render(HomeBtn, { providers: [provideRouter([])] });
-    expect(screen.getByText('Home')).toBeTruthy();
+    expect(fixture.nativeElement.textContent).toContain('Home');
   });
 
   it('should link back to the root route', () => {
