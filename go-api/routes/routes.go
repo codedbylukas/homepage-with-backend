@@ -35,6 +35,8 @@ func SetupRoutes() {
 	r.Use(middleware.Recoverer)
 	r.Post("/api/go/hash/sha512", routesImplementation.Sha512Route)
 	r.Post("/api/go/hash/md5", routesImplementation.Md5Route)
+	r.Post("/api/go/hash/sha256", routesImplementation.Sha256Route)
+	r.Post("/api/go/hash/sha1", routesImplementation.Sha1Route)
 	server := &http.Server{
 		Addr:              ":8080",
 		Handler:           r,

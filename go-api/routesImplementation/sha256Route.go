@@ -1,25 +1,25 @@
 package routesImplementation
 
 import (
-	"crypto/sha512"
+	"crypto/sha256"
 	"fmt"
 	"log"
 	"net/http"
 )
 
-func getSHA512(data []byte) [64]byte {
-	return sha512.Sum512(data)
+func getsha256(data []byte) [32]byte {
+	return sha256.Sum256([]byte(data))
 }
 
-func Sha512Route(w http.ResponseWriter, r *http.Request) {
+func Sha256Route(w http.ResponseWriter, r *http.Request) {
 	inputData := r.FormValue("data")
 	if inputData == "" {
-		log.Println("Missing parameters in Sha512Route")
+		log.Println("Missing parameters in Sha256Route")
 		http.Error(w, "Missing parameters", http.StatusBadRequest)
 		return
 	}
 
-	hash := getSHA512([]byte(inputData))
+	hash := getsha256([]byte(inputData))
 	writeJsonResponse(w, map[string]string{
 		"hash": fmt.Sprintf("%x", hash),
 	})
