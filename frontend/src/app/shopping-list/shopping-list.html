@@ -1,16 +1,14 @@
-<div class="center-custom">
-  <div class="all slide-in center-text">
-    <h1>Willkommen auf deiner Einkaufsliste</h1>
-    <div class="items">
-      @for (item of items; track item.id) {
-        <div class="item">
-          {{ item.name }} <button class="delete" (click)="deleteItem(item.id)">X</button>
-        </div>
-      } @empty {
-        <p class="emty">Deine Einkaufsliste ist leer.</p>
-      }
-      <button class="add" (click)="addItem()">+</button>
-    </div>
-    <app-home-btn></app-home-btn>
+<div class="all slide-in center-text">
+  <h1>Willkommen auf deiner Einkaufsliste</h1>
+  <div class="items">
+    @for (item of items; track item.id) {
+      <div class="item">
+        {{ item.name }} <button class="delete" (click)="deleteItem(item.id)">X</button>
+      </div>
+    } @empty {
+      <p class="emty">Deine Einkaufsliste ist leer.</p>
+    }
+    <button class="add" (click)="addItem()">+</button>
   </div>
+  <app-home-btn></app-home-btn>
 </div>
