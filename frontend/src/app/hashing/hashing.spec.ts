@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Hashing } from './hashing';
+import { provideRouter } from '@angular/router';
 
 describe('Hashing', () => {
   let component: Hashing;
@@ -9,6 +10,7 @@ describe('Hashing', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Hashing],
+      providers: [provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Hashing);

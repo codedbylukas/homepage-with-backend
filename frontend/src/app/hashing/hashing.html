@@ -5,7 +5,7 @@
     bis jetzt alles schon sehen kannst und welche hashing Algorythmen funktionieren.
   </p>
   <br />
-  <select name="encode-algo" id="encode-algo" #algorithmSelect>
+  <select name="encode-algo" id="encode-algo" #algorithmSelect (click)="loadHash()">
     <option value="sha512">sha512</option>
     <option value="md5">md5</option>
   </select>
