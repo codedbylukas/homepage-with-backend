@@ -65,5 +65,3 @@ void setup_route_base32(crow::SimpleApp& app) {
         return crow::response(200, response);
     });
 }
-
-
