@@ -32,11 +32,25 @@ func SetupRoutes() error {
 		Logger:  logger,
 		NoColor: true,
 	}))
+
 	r.Use(middleware.Recoverer)
+
 	r.Post("/api/go/hash/sha512", routesImplementation.Sha512Route(logger))
 	r.Post("/api/go/hash/md5", routesImplementation.Md5Route(logger))
 	r.Post("/api/go/hash/sha256", routesImplementation.Sha256Route(logger))
 	r.Post("/api/go/hash/sha1", routesImplementation.Sha1Route(logger))
+	r.Post("/api/go/hash/argon2", routesImplementation.Argon2Route(logger))
+	r.Post("/api/go/hash/blake2b", routesImplementation.Blake2bRoute(logger))
+	r.Post("/api/go/hash/bcrypt", routesImplementation.BycryptRoute(logger))
+
+	r.Get("/api/go/hash/sha512",routesImplementation.AnswerGetHashingRoute(logger))
+	r.Get("/api/go/hash/md5",routesImplementation.AnswerGetHashingRoute(logger))
+	r.Get("/api/go/hash/sha256",routesImplementation.AnswerGetHashingRoute(logger))
+	r.Get("/api/go/hash/sha1",routesImplementation.AnswerGetHashingRoute(logger))
+	r.Get("/api/go/hash/argon2",routesImplementation.AnswerGetHashingRoute(logger))
+	r.Get("/api/go/hash/blake2b",routesImplementation.AnswerGetHashingRoute(logger))
+	r.Get("/api/go/hash/bcrypt",routesImplementation.AnswerGetHashingRoute(logger))
+
 	server := &http.Server{
 		Addr:              ":8080",
 		Handler:           r,
