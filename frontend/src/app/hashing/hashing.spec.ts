@@ -38,6 +38,19 @@ describe('Hashing', () => {
       'MD5',
     );
   });
+
+  it('should have the sha256 text in the template', async () => {
+    expect(fixture.nativeElement.querySelector('option[value="sha256"]')?.textContent.trim()).toBe(
+      'SHA-256',
+    );
+  });
+
+  it('should have the sha1 text in the template', async () => {
+    expect(fixture.nativeElement.querySelector('option[value="sha1"]')?.textContent.trim()).toBe(
+      'SHA-1',
+    );
+  });
+
   it('should have the Hashing text in the template', async () => {
     expect(fixture.nativeElement.textContent).toContain('Hashing');
   });
@@ -45,8 +58,8 @@ describe('Hashing', () => {
     expect(fixture.nativeElement.textContent).toContain('Convertieren');
   });
   it('should render the input label text in the template', async () => {
-    expect(
-      fixture.nativeElement.textContent,
-    ).toMatch(/Bitte gib mir den Text an, den ich convertieren soll\.:/i);
+    expect(fixture.nativeElement.textContent).toMatch(
+      /Bitte gib mir den Text an, den ich convertieren soll\.:/i,
+    );
   });
 });
