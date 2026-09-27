@@ -45,33 +45,39 @@ export class NumberGessingGame implements OnInit {
   }
 
   checkGuess() {
-    if (this.gameWon) {
-      this.message = 'Du hasst schon gewonnen!!!!';
-      return;
-    }
-    if (this.guess === null) {
-      this.message = 'Bitte gib eine Zahl ein.';
-      return;
-    }
-
-    this.attempts++;
-
-    this.current_gess = this.guess;
-    if (this.guess === this.localRandomNumber) {
-      this.message = 'Richtig! Du hast die Zahl erraten.';
-      this.gameWon = true;
-    } else if (this.guess < this.localRandomNumber) {
-      this.message = 'Deine Zahl ist zu niedrig. Versuche es noch einmal.';
-    } else {
-      this.message = 'Deine Zahl ist zu hoch. Versuche es noch einmal.';
+    try {
+      if (this.gameWon) {
+        this.message = 'Du hasst schon gewonnen!!!!';
+        return;
+      }
+      if (this.guess === null) {
+        this.message = 'Bitte gib eine Zahl ein.';
+        return;
+      }
+      this.attempts++;
+      this.current_gess = this.guess;
+      if (this.guess === this.localRandomNumber) {
+        this.message = 'Richtig! Du hast die Zahl erraten.';
+        this.gameWon = true;
+      } else if (this.guess < this.localRandomNumber) {
+        this.message = 'Deine Zahl ist zu niedrig. Versuche es noch einmal.';
+      } else {
+        this.message = 'Deine Zahl ist zu hoch. Versuche es noch einmal.';
+      }
+    } catch (e) {
+      console.log('Fehler beim Überprüfen der Zahl.: ' + e);
     }
   }
 
   resetGame() {
-    this.guess = null;
-    this.message = '';
-    this.attempts = 0;
-    this.gameWon = false;
-    this.loadNewNumber();
+    try {
+      this.guess = null;
+      this.message = '';
+      this.attempts = 0;
+      this.gameWon = false;
+      this.loadNewNumber();
+    } catch (e) {
+      console.log('Fehler beim neustarten des Spiels.: ' + e);
+    }
   }
 }
