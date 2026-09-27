@@ -18,7 +18,7 @@ describe('Projects', () => {
   }
 
   it('should show all project links', async () => {
-    await render(Projects);
+    await render(Projects, { providers: [provideRouter([])] });
     expect(screen.getAllByRole('link')).toHaveLength(3);
   });
 

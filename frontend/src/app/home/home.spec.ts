@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { render, screen } from '@testing-library/angular';
 import { Home } from './home';
 
 describe('Home', () => {
@@ -15,6 +14,7 @@ describe('Home', () => {
 
     fixture = TestBed.createComponent(Home);
     component = fixture.componentInstance;
+    fixture.detectChanges();
     await fixture.whenStable();
   });
 
@@ -48,10 +48,12 @@ describe('Home', () => {
     let usedProject: {
       name: string;
     } = projects[i];
-    it(`should expose project destination ${usedRoute}`, async () => {
-      TestBed.resetTestingModule();
-      await render(Home, { providers: [provideRouter([])] });
-      expect(screen.getByRole('link', usedProject).getAttribute('href')).toBe(usedRoute);
+    it(`should expose project destination ${usedRoute}`, () => {
+      const links = (fixture.nativeElement as HTMLElement).querySelectorAll('a');
+      const link = Array.from(links).find(
+        (element: HTMLAnchorElement) => element.textContent?.trim() === usedProject.name,
+      );
+      expect(link?.getAttribute('href')).toBe(usedRoute);
     });
   }
 });

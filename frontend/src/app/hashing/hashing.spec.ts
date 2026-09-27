@@ -56,7 +56,32 @@ describe('Hashing', () => {
       'SHA-1',
     );
   });
+
+  it('should have the argon2 text in the template', async () => {
+    expect(fixture.nativeElement.querySelector('option[value="argon2"]')?.textContent.trim()).toBe(
+      'ARGON2',
+    );
+  });
+
+  it('should have the blake2b text in the template', async () => {
+    expect(fixture.nativeElement.querySelector('option[value="blake2b"]')?.textContent.trim()).toBe(
+      'BLAKE2b',
+    );
+  });
+
+  it('should have the bcrypt text in the template', async () => {
+    expect(fixture.nativeElement.querySelector('option[value="bcrypt"]')?.textContent.trim()).toBe(
+      'BCRYPT',
+    );
+  });
   const displayedText: string[] = [
+    'SHA-512',
+    'MD5',
+    'SHA-256',
+    'SHA-1',
+    'ARGON2',
+    'BLAKE2b',
+    'BCRYPT',
     'Hashing',
     'Convertieren',
     'Bitte gib mir den Text an, den ich convertieren soll',
