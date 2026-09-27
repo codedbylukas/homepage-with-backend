@@ -14,6 +14,7 @@ services:
     depends_on:
       - homepage-backend-cs
       - homepage-backend-cpp
+      - homepage-backend-go
     volumes:
       - ./webserver-logs:/var/log/nginx
 
@@ -38,3 +39,14 @@ services:
       - "10000:10000"
     volumes:
       - ./cpp-api-server-logs:/app/logs
+
+  homepage-backend-go:
+    build:
+      context: ./go-api
+    container_name: my-api-go-homepage
+    networks:
+      - homepage-network
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./go-api-server-logs:/logs

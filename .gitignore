@@ -1,5 +1,5 @@
 .info
-
-/webserver-logs/*
-/cs-api-server-logs/*
-/cpp-api-server-logs/*
+/webserver-logs
+/cs-api-server-logs
+/cpp-api-server-logs
+/go-api-server-logs
