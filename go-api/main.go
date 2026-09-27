@@ -2,7 +2,11 @@ package main
 
 import (
 	"go-api/routes"
+	"log"
 )
+
 func main() {
-	routes.SetupRoutes()
+	if err := routes.SetupRoutes(); err != nil {
+		log.Fatal(err)
+	}
 }

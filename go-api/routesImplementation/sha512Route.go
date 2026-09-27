@@ -11,17 +11,18 @@ func getSHA512(data []byte) [64]byte {
 	return sha512.Sum512(data)
 }
 
-func Sha512Route(w http.ResponseWriter, r *http.Request) {
-	inputData := r.FormValue("data")
-	if inputData == "" {
-		log.Println("Missing parameters in Sha512Route")
-		http.Error(w, "Missing parameters", http.StatusBadRequest)
-		return
+func Sha512Route(logger *log.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		inputData := r.FormValue("data")
+		if inputData == "" {
+			logger.Println("Missing parameters in Sha512Route")
+			http.Error(w, "Missing parameters", http.StatusBadRequest)
+			return
+		}
+
+		hash := getSHA512([]byte(inputData))
+		writeJsonResponse(logger, w, map[string]string{
+			"hash": fmt.Sprintf("%x", hash),
+		})
 	}
-
-	hash := getSHA512([]byte(inputData))
-	writeJsonResponse(w, map[string]string{
-		"hash": fmt.Sprintf("%x", hash),
-	})
 }
-

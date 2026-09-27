@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"errors"
 	"go-api/routesImplementation"
 	"log"
 	"net/http"
@@ -11,9 +12,9 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 )
 
-func SetupRoutes() {
+func SetupRoutes() error {
 	if err := os.MkdirAll("./logs", 0750); err != nil {
-		log.Fatalf("Logverzeichnis konnte nicht erstellt werden: %v", err)
+		return err
 	}
 	file, err := os.OpenFile(
 		"./logs/api.log",
@@ -21,22 +22,21 @@ func SetupRoutes() {
 		0640,
 	)
 	if err != nil {
-		log.Fatalf("Logdatei konnte nicht geöffnet werden: %v", err)
+		return err
 	}
 	defer file.Close()
-	log.SetOutput(file)
-	log.SetFlags(log.LstdFlags)
+	logger := log.New(file, "", log.LstdFlags)
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestLogger(&middleware.DefaultLogFormatter{
-		Logger:  log.Default(),
+		Logger:  logger,
 		NoColor: true,
 	}))
 	r.Use(middleware.Recoverer)
-	r.Post("/api/go/hash/sha512", routesImplementation.Sha512Route)
-	r.Post("/api/go/hash/md5", routesImplementation.Md5Route)
-	r.Post("/api/go/hash/sha256", routesImplementation.Sha256Route)
-	r.Post("/api/go/hash/sha1", routesImplementation.Sha1Route)
+	r.Post("/api/go/hash/sha512", routesImplementation.Sha512Route(logger))
+	r.Post("/api/go/hash/md5", routesImplementation.Md5Route(logger))
+	r.Post("/api/go/hash/sha256", routesImplementation.Sha256Route(logger))
+	r.Post("/api/go/hash/sha1", routesImplementation.Sha1Route(logger))
 	server := &http.Server{
 		Addr:              ":8080",
 		Handler:           r,
@@ -45,6 +45,9 @@ func SetupRoutes() {
 		WriteTimeout:      10 * time.Second,
 		IdleTimeout:       60 * time.Second,
 	}
-	log.Println("API is working on http://localhost:8080")
-	log.Fatal(server.ListenAndServe())
+	logger.Println("API is working on http://localhost:8080")
+	if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+	return nil
 }
