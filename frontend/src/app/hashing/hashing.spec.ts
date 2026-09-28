@@ -93,7 +93,7 @@ describe('Hashing', () => {
     });
   }
 
-  ['sha512', 'md5', 'sha256', 'sha1'].forEach((algorithm) => {
+  ['sha512', 'md5', 'sha256', 'sha1', 'argon2', 'blake2b', 'bcrypt'].forEach((algorithm) => {
     it(`should POST the input as form data for ${algorithm}`, () => {
       (fixture.nativeElement.querySelector('select') as HTMLSelectElement).value = algorithm;
       (fixture.nativeElement.querySelector('#encode-text') as HTMLInputElement).value =
