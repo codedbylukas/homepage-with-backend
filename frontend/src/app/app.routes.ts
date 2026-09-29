@@ -4,6 +4,7 @@ import { License } from './license/license';
 import { NumberGessingGame } from './number-gessing-game/number-gessing-game';
 import { ShoppingList } from './shopping-list/shopping-list';
 import { Encoding } from './encoding/encoding';
+import { Hashing } from './hashing/hashing';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -11,4 +12,5 @@ export const routes: Routes = [
   { path: 'number-guessing-game', component: NumberGessingGame },
   { path: 'shopping-list', component: ShoppingList },
   { path: 'encoding', component: Encoding },
+  { path: 'hashing', component: Hashing },
 ];

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/angular';
+import { fireEvent } from '@testing-library/dom';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting, HttpTestingController } from '@angular/common/http/testing';
@@ -12,7 +13,7 @@ describe('NumberGessingGame', () => {
       providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     });
     httpMock = TestBed.inject(HttpTestingController);
-    const req = httpMock.expectOne((request) => request.url.includes('/api/cs/random'));
+    const req = httpMock.expectOne((request) => request.url.includes('/api/cpp/random'));
     req.flush({ randomNumber: 42 });
     return result;
   }
@@ -26,11 +27,16 @@ describe('NumberGessingGame', () => {
     const { fixture } = await setupComponent();
     expect(fixture.componentInstance).toBeTruthy();
   });
-
   it('defined function load new number', async () => {
     const { fixture } = await setupComponent();
     const component = fixture.componentInstance;
     expect(component.loadNewNumber).toBeDefined();
+  });
+
+  it('load new number should be a function', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    expect(typeof component.loadNewNumber).toBe('function');
   });
 
   it('defined function check guess', async () => {
@@ -39,24 +45,150 @@ describe('NumberGessingGame', () => {
     expect(component.checkGuess).toBeDefined();
   });
 
+  it('check guess should be a function', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    expect(typeof component.checkGuess).toBe('function');
+  });
+
   it('defined function reset game', async () => {
     const { fixture } = await setupComponent();
     const component = fixture.componentInstance;
     expect(component.resetGame).toBeDefined();
   });
 
-  it('should create Zahlen erraten text', async () => {
-    await setupComponent();
-    expect(screen.getByText('Zahlen erraten')).toBeTruthy();
+  it('reset game should be a function', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    expect(typeof component.resetGame).toBe('function');
   });
 
-  it('should create gessing text', async () => {
-    await setupComponent();
-    expect(screen.getByText('Versuche die Zahl zwischen 0 und 100 zu erraten')).toBeTruthy();
+  const displayedText: string[] = [
+    'Zahlen erraten',
+    'Versuche die Zahl zwischen 0 und 100 zu erraten',
+    'Guess',
+  ];
+  for (let i = 0; i < displayedText.length; i++) {
+    let element: string = displayedText[i];
+    it(`the text "${element}" should be in the HTML template`, async () => {
+      await setupComponent();
+      expect(screen.getByText(element)).toBeTruthy();
+    });
+  }
+
+  it('should ask for a number when no guess was entered', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+
+    component.checkGuess();
+
+    expect(component.message).toBe('Bitte gib eine Zahl ein.');
+    expect(component.attempts).toBe(0);
   });
 
-  it('should create guess button test', async () => {
-    await setupComponent();
-    expect(screen.getByText('Guess')).toBeTruthy();
+  it('should report whether a guess is too low or too high', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+
+    component.guess = 41;
+    component.checkGuess();
+    expect(component.message).toBe('Deine Zahl ist zu niedrig. Versuche es noch einmal.');
+
+    component.guess = 43;
+    component.checkGuess();
+    expect(component.message).toBe('Deine Zahl ist zu hoch. Versuche es noch einmal.');
+    expect(component.attempts).toBe(2);
+  });
+
+  it('should win on the correct guess and reject guesses afterwards', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+
+    component.guess = 42;
+    component.checkGuess();
+    expect(component.gameWon).toBe(true);
+    expect(component.message).toBe('Richtig! Du hast die Zahl erraten.');
+
+    component.guess = 41;
+    component.checkGuess();
+    expect(component.message).toBe('Du hasst schon gewonnen!!!!');
+    expect(component.attempts).toBe(1);
+  });
+
+  it('should reset the game and request a new number', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    component.guess = 42;
+    component.checkGuess();
+
+    component.resetGame();
+    const request = httpMock.expectOne((request) => request.url.includes('/api/cpp/random'));
+    request.flush({ randomNumber: 7 });
+
+    expect(component.guess).toBeNull();
+    expect(component.message).toBe('');
+    expect(component.attempts).toBe(0);
+    expect(component.gameWon).toBe(false);
+    expect(component.localRandomNumber).toBe(7);
+  });
+
+  it('should accept zero as a valid random number from the API', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    component.localRandomNumber = 42;
+
+    component.loadNewNumber();
+    httpMock.expectOne(component.apiEndpoint).flush({ randomNumber: 0 });
+
+    expect(component.localRandomNumber).toBe(0);
+  });
+
+  it('should show low-guess feedback, attempt count, and win state in the UI', async () => {
+    const { fixture } = await setupComponent();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    const button = fixture.nativeElement.querySelector('button') as HTMLButtonElement;
+
+    fireEvent.input(input, { target: { value: '41' } });
+    expect(fixture.componentInstance.guess).toBe(41);
+    fireEvent.click(button);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.wrong')?.textContent).toContain('zu niedrig');
+    expect(fixture.nativeElement.textContent).toContain('Anzahl der Versuche: 1');
+    expect(fixture.nativeElement.textContent).toContain('Letztes geratene Zahl ist: 41');
+
+    fireEvent.input(input, { target: { value: '42' } });
+    fireEvent.click(button);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.correct')?.textContent).toContain('Richtig!');
+    expect(fixture.nativeElement.textContent).toContain('Neues Spiel');
+  });
+
+  it('should fall back to a local number when the random-number API fails', async () => {
+    const { fixture } = await setupComponent();
+    const component = fixture.componentInstance;
+    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.42);
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    component.loadNewNumber();
+    httpMock.expectOne(component.apiEndpoint).flush('unavailable', {
+      status: 503,
+      statusText: 'Service Unavailable',
+    });
+
+    expect(component.localRandomNumber).toBe(42);
+    expect(errorSpy).toHaveBeenCalled();
+    randomSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
+  it('should submit a guess when Enter is pressed in the number input', async () => {
+    const { fixture } = await setupComponent();
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = '42';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+
+    expect(fixture.componentInstance.gameWon).toBe(true);
+    expect(fixture.componentInstance.attempts).toBe(1);
   });
 });

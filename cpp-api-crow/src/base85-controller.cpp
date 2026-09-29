@@ -1,3 +1,4 @@
+#include "base85-controller.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,12 +8,9 @@
 #include <map>
 #include <cctype>
 #include "crow.h"
-#include "base85-controller.h"
 
-using namespace std;
-
-string base85_encode(const string& in) {
-    string out;
+std::string base85_encode(const std::string& in) {
+    std::string out;
     size_t i = 0;
     while (i < in.size()) {
         uint32_t tuple = 0;
@@ -41,8 +39,8 @@ string base85_encode(const string& in) {
     return out;
 }
 
-string base85_decode(const string& in) {
-    string out;
+std::string base85_decode(const std::string& in) {
+    std::string out;
     size_t i = 0;
     while (i < in.size()) {
         uint32_t tuple = 0;
@@ -65,19 +63,19 @@ string base85_decode(const string& in) {
     return out;
 }
 
-void setup_route_base84(crow::SimpleApp& app) {
+void setup_route_base85(crow::SimpleApp& app) {
     CROW_ROUTE(app, "/api/cpp/encode/to-base85/<string>")
-    ([](string plainText){
+    ([](std::string plainText){
         crow::json::wvalue response;
-        string base64_text = base85_encode(plainText);
+        std::string base64_text = base85_encode(plainText);
         response["conveted"] = base64_text;
         return crow::response(200, response);
     });
 
     CROW_ROUTE(app, "/api/cpp/encode/from-base85/<string>")
-    ([](string base64Text){
+    ([](std::string base64Text){
         crow::json::wvalue response;
-        string plain_text = base85_decode(base64Text);
+        std::string plain_text = base85_decode(base64Text);
         response["converted"] = plain_text;
         return crow::response(200, response);
     });

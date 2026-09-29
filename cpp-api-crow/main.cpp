@@ -3,14 +3,13 @@
 #include <mutex>
 #include <filesystem>
 #include "crow.h"
-#include "include/index-controller.h"
-#include "include/base64-controller.h"
-#include "include/hex-controller.h"
-#include "include/rot13-controller.h"
-#include "include/base32-controller.h"
-#include "include/base85-controller.h"
-
-using namespace std;
+#include "include/index-controller.hpp"
+#include "include/base64-controller.hpp"
+#include "include/hex-controller.hpp"
+#include "include/rot13-controller.hpp"
+#include "include/base32-controller.hpp"
+#include "include/base85-controller.hpp"
+#include "random-controller.hpp"
 
 class FileLogger : public crow::ILogHandler {
 public:
@@ -60,9 +59,10 @@ int main() {
     setup_route_hex(app);
     setup_route_rot13(app);
     setup_route_base32(app);
-    setup_route_base84(app);
+    setup_route_base85(app);
+    setup_route_random_controller(app);
     
-    cout << "Server started on port " << port << endl;
+    std::cout << "Server started on port " << port << std::endl;
     app.port(port).multithreaded().run();
 
     return 0;

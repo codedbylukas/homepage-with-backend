@@ -1,3 +1,4 @@
+#include "base64-controller.hpp"
 #include <iostream>
 #include "crow.h"
 #include <string>
@@ -5,12 +6,10 @@
 #include <iomanip>
 #include <sstream>
 
-using namespace std;
+const std::string B64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-const string B64_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-
-string base64_encode(const string& in) {
-    string out;
+std::string base64_encode(const std::string& in) {
+    std::string out;
     int val = 0, valb = -6;
     for (unsigned char c : in) {
         val = (val << 8) + c;
@@ -25,9 +24,9 @@ string base64_encode(const string& in) {
     return out;
 }
 
-string base64_decode(const string& in) {
-    string out;
-    vector<int> T(256, -1);
+std::string base64_decode(const std::string& in) {
+    std::string out;
+    std::vector<int> T(256, -1);
     for (int i = 0; i < 64; i++) T[B64_CHARS[i]] = i;
 
     int val = 0, valb = -8;
@@ -45,17 +44,17 @@ string base64_decode(const string& in) {
 
 void setup_route_basesv(crow::SimpleApp& app) {
     CROW_ROUTE(app, "/api/cpp/encode/to-base64/<string>")
-    ([](string plainText){
+    ([](std::string plainText){
         crow::json::wvalue response;
-        string base64_text = base64_encode(plainText);
+        std::string base64_text = base64_encode(plainText);
         response["conveted"] = base64_text;
         return crow::response(200, response);
     });
 
     CROW_ROUTE(app, "/api/cpp/encode/from-base64/<string>")
-    ([](string base64Text){
+    ([](std::string base64Text){
         crow::json::wvalue response;
-        string plain_text = base64_decode(base64Text);
+        std::string plain_text = base64_decode(base64Text);
         response["converted"] = plain_text;
         return crow::response(200, response);
     });

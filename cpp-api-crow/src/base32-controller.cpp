@@ -1,3 +1,4 @@
+#include "base32-controller.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,13 +8,10 @@
 #include <map>
 #include <cctype>
 #include "crow.h"
-#include "base32-controller.h"
 
-using namespace std;
-
-const string B32_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-string base32_encode(const string& in) {
-    string out;
+const std::string B32_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+std::string base32_encode(const std::string& in) {
+    std::string out;
     int val = 0, valb = 0;
     for (unsigned char c : in) {
         val = (val << 8) | c;
@@ -32,13 +30,13 @@ string base32_encode(const string& in) {
     return out;
 }
 
-string base32_decode(const string& in) {
-    string out;
+std::string base32_decode(const std::string& in) {
+    std::string out;
     int val = 0, valb = 0;
     for (unsigned char c : in) {
         if (c == '=') break;
         size_t idx = B32_CHARS.find(toupper(c));
-        if (idx == string::npos) continue;
+        if (idx == std::string::npos) continue;
         
         val = (val << 5) | idx;
         valb += 5;
@@ -52,20 +50,18 @@ string base32_decode(const string& in) {
 
 void setup_route_base32(crow::SimpleApp& app) {
     CROW_ROUTE(app, "/api/cpp/encode/to-base32/<string>")
-    ([](string plainText){
+    ([](std::string plainText){
         crow::json::wvalue response;
-        string base64_text = base32_encode(plainText);
+        std::string base64_text = base32_encode(plainText);
         response["conveted"] = base64_text;
         return crow::response(200, response);
     });
 
     CROW_ROUTE(app, "/api/cpp/encode/from-base32/<string>")
-    ([](string base64Text){
+    ([](std::string base64Text){
         crow::json::wvalue response;
-        string plain_text = base32_decode(base64Text);
+        std::string plain_text = base32_decode(base64Text);
         response["converted"] = plain_text;
         return crow::response(200, response);
     });
 }
-
-

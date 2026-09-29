@@ -1,21 +1,11 @@
-#--- STAGE 0: Test ---
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS test
-WORKDIR /src
-COPY *.csproj ./
-RUN dotnet restore
-COPY . .
-RUN dotnet build
-
 # --- STAGE 1: Build & Publish ---
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Useing of docker caching to cache the dependencies
 COPY *.csproj ./
 RUN dotnet restore
-
-# Using and copying the ather source code
 COPY . .
+RUN dotnet build --no-restore
 RUN dotnet publish -c Release -o /app/publish --no-restore
 
 # --- STAGE 2: Runtime ---

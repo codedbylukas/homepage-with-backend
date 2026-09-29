@@ -1,3 +1,4 @@
+#include "hex-controller.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,23 +7,20 @@
 #include <cstdint>
 #include <cstring>
 #include "crow.h"
-#include "hex-controller.h"
 
-using namespace std;
-
-string hex_encode(const string& in) {
-    stringstream ss;
+std::string hex_encode(const std::string& in) {
+    std::stringstream ss;
     for (unsigned char c : in) {
-        ss << hex << setw(2) << setfill('0') << (int)c;
+        ss << std::hex << std::setw(2) << std::setfill('0') << (int)c;
     }
     return ss.str();
 }
 
-string hex_decode(const string& in) {
-    string out;
+std::string hex_decode(const std::string& in) {
+    std::string out;
     for (size_t i = 0; i < in.length(); i += 2) {
-        string byteString = in.substr(i, 2);
-        char byte = (char) strtol(byteString.c_str(), nullptr, 16);
+        std::string byteString = in.substr(i, 2);
+        char byte = (char) std::strtol(byteString.c_str(), nullptr, 16);
         out.push_back(byte);
     }
     return out;
@@ -30,17 +28,17 @@ string hex_decode(const string& in) {
 
 void setup_route_hex(crow::SimpleApp& app) {
     CROW_ROUTE(app, "/api/cpp/encode/to-hex/<string>")
-    ([](string plainText){
+    ([](std::string plainText){
         crow::json::wvalue response;
-        string base64_text = hex_encode(plainText);
+        std::string base64_text = hex_encode(plainText);
         response["conveted"] = base64_text;
         return crow::response(200, response);
     });
 
     CROW_ROUTE(app, "/api/cpp/encode/from-hex/<string>")
-    ([](string base64Text){
+    ([](std::string base64Text){
         crow::json::wvalue response;
-        string plain_text = hex_decode(base64Text);
+        std::string plain_text = hex_decode(base64Text);
         response["converted"] = plain_text;
         return crow::response(200, response);
     });

@@ -1,5 +1,7 @@
 .info
+/webserver-logs
+/cs-api-server-logs
+/cpp-api-server-logs
+/go-api-server-logs
+get-all.py
 
-/webserver-logs/*
-/cs-api-server-logs/*
-/cpp-api-server-logs/*

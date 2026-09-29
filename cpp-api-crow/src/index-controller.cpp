@@ -1,8 +1,6 @@
+#include "index-controller.hpp"
 #include "crow.h"
-#include "include/index-controller.h"
 #include <iostream>
-
-using namespace std;
 
 void setup_route_index(crow::SimpleApp& app) {
     CROW_ROUTE(app, "/")([](){

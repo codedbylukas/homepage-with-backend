@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ApIModule } from '../api-endpints';
-import { HomeBtn } from './home-btn/home-btn';
+import { HomeBtn } from '../home-btn/home-btn';
 
 @Component({
   selector: 'app-number-gessing-game',
@@ -33,7 +33,7 @@ export class NumberGessingGame implements OnInit {
     this.http.get<any>(this.apiEndpoint).subscribe({
       next: (response) => {
         this.data = response;
-        if (response && response.randomNumber) {
+        if (typeof response?.randomNumber === 'number') {
           this.localRandomNumber = response.randomNumber;
         }
       },
@@ -45,33 +45,39 @@ export class NumberGessingGame implements OnInit {
   }
 
   checkGuess() {
-    if (this.gameWon) {
-      this.message = 'Du hasst schon gewonnen!!!!';
-      return;
-    }
-    if (this.guess === null) {
-      this.message = 'Bitte gib eine Zahl ein.';
-      return;
-    }
-
-    this.attempts++;
-
-    this.current_gess = this.guess;
-    if (this.guess === this.localRandomNumber) {
-      this.message = 'Richtig! Du hast die Zahl erraten.';
-      this.gameWon = true;
-    } else if (this.guess < this.localRandomNumber) {
-      this.message = 'Deine Zahl ist zu niedrig. Versuche es noch einmal.';
-    } else {
-      this.message = 'Deine Zahl ist zu hoch. Versuche es noch einmal.';
+    try {
+      if (this.gameWon) {
+        this.message = 'Du hasst schon gewonnen!!!!';
+        return;
+      }
+      if (this.guess === null) {
+        this.message = 'Bitte gib eine Zahl ein.';
+        return;
+      }
+      this.attempts++;
+      this.current_gess = this.guess;
+      if (this.guess === this.localRandomNumber) {
+        this.message = 'Richtig! Du hast die Zahl erraten.';
+        this.gameWon = true;
+      } else if (this.guess < this.localRandomNumber) {
+        this.message = 'Deine Zahl ist zu niedrig. Versuche es noch einmal.';
+      } else {
+        this.message = 'Deine Zahl ist zu hoch. Versuche es noch einmal.';
+      }
+    } catch (e) {
+      console.log('Fehler beim Überprüfen der Zahl.: ' + e);
     }
   }
 
   resetGame() {
-    this.guess = null;
-    this.message = '';
-    this.attempts = 0;
-    this.gameWon = false;
-    this.loadNewNumber();
+    try {
+      this.guess = null;
+      this.message = '';
+      this.attempts = 0;
+      this.gameWon = false;
+      this.loadNewNumber();
+    } catch (e) {
+      console.log('Fehler beim neustarten des Spiels.: ' + e);
+    }
   }
 }
