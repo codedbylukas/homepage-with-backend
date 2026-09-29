@@ -6,6 +6,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	_ "modernc.org/sqlite"
 )
 
 func writeJsonResponse(logger *log.Logger, w http.ResponseWriter, data interface{}) {
@@ -39,6 +41,21 @@ func InitDatabase(logger *log.Logger) (*sql.DB, error) {
 	}
 
 	logger.Println("Database connection initialized")
+
+	for _, statement := range []string{
+	`CREATE TABLE IF NOT EXISTS comments (
+	id INTEGER PRIMARY KEY,
+	name TEXT NOT NULL,
+	comments TEXT NOT NULL
+	)`,
+	} {
+		if _, err := db.Exec(statement); err != nil {
+			logger.Printf("Failed to initialize database schema: %v", err)
+			db.Close()
+			return nil, err
+		}
+	}
+
 	return db, nil
 }
 
