@@ -26,6 +26,11 @@ func SetupRoutes() error {
 	}
 	defer file.Close()
 	logger := log.New(file, "", log.LstdFlags)
+	db, err := routesImplementation.InitDatabase(logger)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
 
 	r := chi.NewRouter()
 	r.Use(middleware.RequestLogger(&middleware.DefaultLogFormatter{

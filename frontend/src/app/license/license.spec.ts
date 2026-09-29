@@ -24,7 +24,7 @@ describe('License', () => {
   });
 
   it('should show the license heading', async () => {
-    expect(fixture.nativeElement.textContent).toContain('This Licenses are used');
+    expect(fixture.nativeElement.textContent).toContain('Diese Lizenzen wurden genutzt');
   });
 
   it('should show the Roboto license information', async () => {
