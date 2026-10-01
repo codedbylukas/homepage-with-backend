@@ -8,6 +8,7 @@ import { NumberGessingGame } from './number-gessing-game/number-gessing-game';
 import { ShoppingList } from './shopping-list/shopping-list';
 import { Encoding } from './encoding/encoding';
 import { Hashing } from './hashing/hashing';
+import { Comments } from './comments/comments';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -38,6 +39,7 @@ describe('App', () => {
       'shopping-list',
       'encoding',
       'hashing',
+      'comments',
     ]);
     expect(routes.map((route) => route.component)).toEqual([
       Home,
@@ -46,6 +48,7 @@ describe('App', () => {
       ShoppingList,
       Encoding,
       Hashing,
+      Comments,
     ]);
   });
 });
