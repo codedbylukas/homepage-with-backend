@@ -1,4 +1,5 @@
 @use '../center.sass';
+@use '../slide-in.sass';
 
 .add {
   background-color: rgba(0, 0, 139, 0.685);
@@ -10,4 +11,16 @@ button {
   border-radius: 45%;
   color: white;
   border: none;
+}
+
+.box {
+  margin-left: 10vw;
+  margin-top: 40px;
+  padding: 20px;
+  width: 80vw;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.all {
+  padding-top: 20px;
 }
