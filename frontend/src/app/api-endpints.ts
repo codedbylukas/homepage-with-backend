@@ -24,4 +24,11 @@ export class ApIModule {
     }
     return encodeApiEndpoint;
   }
+  static getApiComments(): string {
+    let commentsApiEndpoint: string = '/api/go/comments';
+    if (useDebugUrl) {
+      commentsApiEndpoint = 'http://localhost:8080/api/go/comments';
+    }
+    return commentsApiEndpoint;
+  }
 }

@@ -2,7 +2,23 @@
   <div class="box">
     <h1 class="center-text">Kommentare</h1>
     <div class="center-div">
-      <button class="add">+</button>
+      <button class="add" (click)="addComment()">+</button>
+    </div>
+    <div class="center-div">
+      @for (comment of comments; track comment.id) {
+        <div class="item">
+          {{ comment.name }} - {{ comment.comments }}
+          <button
+            class="delete"
+            (click)="deleteComment(comment.id)"
+            [attr.aria-label]="'Kommentar ' + comment.name + ' löschen'"
+          >
+            X
+          </button>
+        </div>
+      } @empty {
+        <p class="empty">Keine Kommentare vorhanden.</p>
+      }
     </div>
     <app-home-btn></app-home-btn>
   </div>

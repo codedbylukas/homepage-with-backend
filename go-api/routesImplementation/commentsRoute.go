@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/go-chi/chi/v5"
 )
 
 func CommentsAddRoute(logger *log.Logger, db *sql.DB) http.HandlerFunc {
@@ -67,4 +69,21 @@ func CommentsGetAllRoute(logger *log.Logger, db *sql.DB) http.HandlerFunc {
 	}
 }
 
+func CommentsDeleteRoute(logger *log.Logger, db *sql.DB) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		id := chi.URLParam(r, "id")
+		if strings.TrimSpace(id) == "" {
+			logger.Println("Fehlende Parameter in der CommentsDeleteRoute")
+			http.Error(w, "Fehlende Parameter", http.StatusBadRequest)
+			return
+		}
 
+		if _, err := db.Exec("DELETE FROM comments WHERE id = ?", id); err != nil {
+			logger.Printf("Fehler beim löschen des Kommentares: %v", err)
+			http.Error(w, "Kommentar konnte nicht gelöscht werden", http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+	}
+}
