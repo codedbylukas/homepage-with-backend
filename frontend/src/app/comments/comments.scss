@@ -17,10 +17,66 @@ button {
   margin-left: 10vw;
   margin-top: 40px;
   padding: 20px;
+  padding-bottom: 40px;
   width: 80vw;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .all {
   padding-top: 20px;
+  margin-bottom: 60px;
+}
+
+h1 {
+  font-size: 50px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+p {
+  font-size: 20px;
+}
+
+.item {
+  font-size: 30px;
+  margin-bottom: 15px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(4, 3, 19, 0.3);
+}
+
+button {
+  border: none;
+  padding: 20px;
+  border-radius: 20%;
+  color: rgba(255, 255, 255, 0.685);
+  font-size: 20px;
+}
+
+.delete {
+  font-weight: bold;
+  background-color: rgba(31, 40, 163, 0.705);
+  margin-left: 28px;
+}
+
+.empty {
+  font-size: 24px;
+  color: #666;
+  text-align: center;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.add {
+  margin-top: 20px;
+  background-color: rgba(11, 71, 48, 0.87);
+  font-size: 40px;
+  font-weight: bolder;
+}
+.comments-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column; // <-- HINZUFÜGEN: Stellt sicher, dass die Elemente untereinander stehen!
 }

@@ -4,17 +4,13 @@
     <div class="center-div">
       <button class="add" (click)="addComment()">+</button>
     </div>
-    <div class="center-div">
+    <div class="center-div comments-section">
       @for (comment of comments; track comment.id) {
         <div class="item">
-          {{ comment.name }} - {{ comment.comments }}
-          <button
-            class="delete"
-            (click)="deleteComment(comment.id)"
-            [attr.aria-label]="'Kommentar ' + comment.name + ' löschen'"
-          >
-            X
-          </button>
+          <h2 class="center-text">{{ comment.name }}</h2>
+          <p class="center-text">
+            {{ comment.comments }}
+          </p>
         </div>
       } @empty {
         <p class="empty">Keine Kommentare vorhanden.</p>

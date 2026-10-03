@@ -73,19 +73,4 @@ export class Comments {
       console.log('Fehler beim Hinzufügen der Comments' + e);
     }
   }
-  deleteComment(itemId: number): void {
-    try {
-      this.http.delete(`${this.apiEndpoint}/${itemId}`).subscribe({
-        next: (response) => {
-          console.log('Kommentar erfolgreich gelöscht: ', itemId);
-          this.loadNewComments();
-        },
-        error: (err) => {
-          console.error('Fehler beim Löschen des Objektes', err);
-        },
-      });
-    } catch (e) {
-      console.log('Fehler beim Löschen des Comments.: ' + e);
-    }
-  }
 }
