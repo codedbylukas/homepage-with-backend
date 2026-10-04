@@ -1,174 +1,194 @@
-# Full Stack Application: C++ / .NET / Go Backend with Angular Frontend
+# Full Stack Application: Angular + .NET + C++ + Go
 
-This project is a comprehensive full-stack application featuring an Angular frontend and three distinct microservices written in C#, C++, and Go, orchestrated using Docker Compose. The system provides diverse functionalities including data persistence (Shopping List via C# backend), advanced cryptographic operations (encoding/decoding via C++ backend), and hashing services (via Go backend).
+This project combines an Angular frontend with four separate backend services that are orchestrated through Docker Compose. The app demonstrates how a single frontend can interact with different technologies for distinct tasks:
 
-## Project Overview
+- C# backend for persistent shopping list data
+- C++ Crow backend for random numbers and encoding/decoding utilities
+- Go backend for hashing and comment APIs
+- Angular frontend served with Nginx as a single entry point
 
-The application is designed to demonstrate the integration of multiple technologies:
+## Overview
 
-- **Frontend:** An Angular application providing a user interface for interacting with various features.
-- **Backend Services:**
-  - **C# API (`api-cs`):** Manages persistent data (Shopping List) using LiteDB.
-  - **C++ API (`cpp-api-crow`):** Provides custom cryptographic encoding and decoding functions (Base64, Hex, ROT13, Base32, Base85).
-  - **Go API (`go-api`):** Implements hashing algorithms (MD5, SHA512).
-- **Orchestration:** All services are deployed and networked together using Docker Compose and proxied by Nginx.
+### Components
+
+- Frontend: Angular app served via Nginx on port 80
+- C# API: .NET Web API on port 5202
+- C++ API: Crow service on port 10000
+- Go API: chi-based HTTP server on port 8080
+
+### Features
+
+- Shopping list CRUD with LiteDB
+- Hash generation for MD5, SHA1, SHA256, SHA512, Argon2, Bcrypt, and Blake2b
+- Text encoding and decoding with Base64, Base32, Base85, Hex, and ROT13
+- Random number generation
+- Comment storage API for the Go service
 
 ## Prerequisites
 
-### Primary Requirements (Required for Full Stack Deployment)
-
 - Docker
 - Docker Compose
+- Node.js + npm (for local Angular development)
+- .NET SDK (for local C# API work)
+- Go toolchain (for local Go service development)
+- C++ compiler (for local C++ service compilation)
 
-### Local Development & Debugging (Optional but Recommended)
+## Quick Start
 
-- Node.js / npm (for Angular development)
-- Go (for Go API debugging)
-- C++ Compiler (g++) (for C++ API compilation)
-- .NET SDK (for C# API development)
-
-## Setup and Installation
-
-You have two primary ways to run the project:
-
-### Option A: Quick Start via Docker (Recommended for Deployment)
-
-This method builds all services and deploys them in a single command, making it ideal for immediate testing and deployment.
+Start the full stack with Docker:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
-The application will be accessible on `http://localhost` (via Nginx).
+Then open the app in the browser:
 
-### Option B: Local Frontend Development
+```text
+http://localhost
+```
 
-Use this method if you need to modify the Angular code or debug specific services locally outside of Docker.
+The frontend routes requests to the backend services through the Nginx proxy configuration. The internal Docker network used by the stack is `homepage-network`.
 
-1.  **Build Backend Services:** Start the Docker Compose stack to ensure backend services are running.
-    ```bash
-    docker-compose up -d
-    ```
-2.  **Install Frontend Dependencies:** Navigate to the frontend directory and install Node.js packages.
-    ```bash
-    cd frontend
-    npm install
-    ```
-3.  **Run Frontend Server:** Start the Angular development server.
-    ```bash
-    npm start
-    ```
+## Local Frontend Development
 
-## Running the Project
+If you only want to work on the Angular app locally, start the backend containers and then run the frontend separately:
 
-### Full Stack Execution (Docker)
+```bash
+docker-compose up -d
+cd frontend
+npm install
+npm start
+```
 
-Use `docker-compose up --build` to build all images and start the containerized application stack on `http://localhost`.
+The Angular dev server usually runs on:
 
-### Local Frontend Development (NPM)
+```text
+http://localhost:4200
+```
 
-For local Angular development, follow the steps in Option B:
+## Container Configuration
 
-1.  Ensure Docker Compose is running (`docker-compose up -d`).
-2.  Navigate to `frontend` and run `npm start`.
+The Compose file defines the following services:
 
-## API Endpoints and Usage
+- `homepage-frontend` -> port 80
+- `homepage-backend-cs` -> port 5202
+- `homepage-backend-cpp` -> port 10000
+- `homepage-backend-go` -> port 8080
 
-The frontend interacts with the backend services via Nginx proxy routing defined in `frontend/nginx.conf`.
+## API Routes
 
-| Endpoint Path | Service                      | Port Mapped | Functionality                        | Example Request (Frontend)                                                                                  |
-| :------------ | :--------------------------- | :---------- | :----------------------------------- | :---------------------------------------------------------------------------------------------------------- |
-| `/api/cs/*`   | `homepage-backend-cs` (C#)   | 5202        | Shopping List CRUD operations.       | `GET /api/cs/shoppinglist` <br> `POST /api/cs/shoppinglist?name=Milch` <br> `DELETE /api/cs/shoppinglist/3` |
-| `/api/cpp/*`  | `homepage-backend-cpp` (C++) | 10000       | Cryptographic encoding and decoding. | `GET /api/cpp/encode/to-base64/text` <br> `GET /api/cpp/encode/from-base64/encoded_text`                    |
-| `/api/go/*`   | `homepage-backend-go` (Go)   | 8080        | Hashing services (MD5, SHA512).      | `POST /api/go/hash/sha512` <br> `POST /api/go/hash/md5`                                                     |
+### C# Shopping List API
 
-**Example Frontend Interactions:**
+Base URL: `/api/cs`
 
-- **Hashing:** The Hashing component calls the Go API for hashing operations. Endpoint: `/api/go/hash/{algorithm}`.
-- **Encoding:** The Encoding component calls the C++ API for various encoding/decoding methods. Endpoint format: `/api/cpp/encode/{mode}-{algorithm}/{text}`.
+| Method | Route                            | Description                     |
+| ------ | -------------------------------- | ------------------------------- |
+| GET    | `/api/cs/shoppinglist`           | Returns all shopping list items |
+| POST   | `/api/cs/shoppinglist?name=Milk` | Adds a new item                 |
+| DELETE | `/api/cs/shoppinglist/{id}`      | Removes one item by ID          |
+| DELETE | `/api/cs/shoppinglist/all`       | Removes all items               |
+
+### C++ Encoding / Utility API
+
+Base URL: `/api/cpp`
+
+| Method | Route                                 | Description                    |
+| ------ | ------------------------------------- | ------------------------------ |
+| GET    | `/api/cpp/random`                     | Returns a random integer       |
+| GET    | `/api/cpp/encode/to-base64/{value}`   | Encodes a value to Base64      |
+| GET    | `/api/cpp/encode/from-base64/{value}` | Decodes Base64                 |
+| GET    | `/api/cpp/encode/to-hex/{value}`      | Encodes a value to hexadecimal |
+| GET    | `/api/cpp/encode/from-hex/{value}`    | Decodes hexadecimal            |
+| GET    | `/api/cpp/encode/to-rot13/{value}`    | Applies ROT13                  |
+| GET    | `/api/cpp/encode/to-base32/{value}`   | Encodes to Base32              |
+| GET    | `/api/cpp/encode/to-base85/{value}`   | Encodes to Base85              |
+
+### Go Hashing and Comments API
+
+Base URL: `/api/go`
+
+| Method     | Route                      | Description                                  |
+| ---------- | -------------------------- | -------------------------------------------- |
+| GET        | `/api/go/comments`         | Returns all comments                         |
+| POST       | `/api/go/comments`         | Adds a comment                               |
+| GET / POST | `/api/go/hash/{algorithm}` | Hashes a payload with the selected algorithm |
+
+Supported algorithms:
+
+- `md5`
+- `sha1`
+- `sha256`
+- `sha512`
+- `argon2`
+- `blake2b`
+- `bcrypt`
 
 ## Project Structure
 
-The project is structured into four main components and an orchestration file:
-
-```
+```text
 .
-├── api-cs/                 # .NET Web API (C#) for Shopping List management
+├── api-cs/                  # .NET backend for the shopping list
+│   ├── Controllers/
+│   ├── Models/
 │   ├── Dockerfile
+│   ├── Program.cs / main.cs
 │   └── ...
-├── cpp-api-crow/           # C++ Crow API for cryptographic operations (encoding/decoding)
+├── cpp-api-crow/            # C++ Crow API for encoding and utility routes
+│   ├── include/
+│   ├── src/
 │   ├── Dockerfile
-│   └── src/
-├── go-api/                 # Go API for hashing services (MD5, SHA512)
+│   └── Makefile
+├── go-api/                  # Go backend for hashing and comments
+│   ├── routes/
+│   ├── routesImplementation/
 │   ├── Dockerfile
-│   └── routes/
-├── frontend/               # Angular application (Frontend UI)
-│   ├── Dockerfile
+│   ├── go.mod
+│   └── main.go
+├── frontend/                # Angular frontend
+│   ├── src/
+│   ├── public/
 │   ├── package.json
-│   └── src/
-│       ├── app/
-│       │   ├── api-endpints.ts       # API interaction definitions
-│       │   ├── hashing/             # Hashing functionality UI
-│       │   ├── encoding/            # Encoding/Decoding functionality UI
-│       │   └── shopping-list/       # Shopping List management UI
-│       └── ...
-└── docker-compose.yml       # Defines the multi-service network structure
+│   ├── angular.json
+│   ├── nginx.conf
+│   └── Dockerfile
+├── docker-compose.yml       # Multi-container orchestration
+├── README.md
+└── ...
 ```
 
 ## Testing
 
-### Frontend (Angular)
+### Frontend
 
-Unit and end-to-end tests are managed via the Angular CLI and Vitest:
+The Angular project includes a test setup via Angular CLI/Vitest:
 
 ```bash
 cd frontend
 npm run test
 ```
 
-### Backend Services
+### Backend
 
-- **C# API (`api-cs`):** Tests are not explicitly defined, but the service uses Serilog for logging.
-- **Go API (`go-api`):** Unit testing is not explicitly defined.
-- **C++ API (`cpp-api-crow`):** The Makefile includes a build process focused on maximum performance (PGO), indicating emphasis on optimized compilation rather than extensive unit test coverage in the provided files.
+There are no dedicated automated tests checked into the repository for the .NET, Go, or C++ services in the current state of the project. The focus here is on working containerized services and frontend integration.
 
-## Configuration Details
+## Notes
 
-### Docker Compose Network
+- The frontend service uses an Nginx reverse proxy and exposes the app at port 80.
+- Each backend service writes logs to mounted folders such as `webserver-logs`, `cs-api-server-logs`, `cpp-api-server-logs`, and `go-api-server-logs`.
+- The frontend code references endpoint helpers through `frontend/src/app/api-endpints.ts`.
 
-All services communicate over a private bridge network named `homepage-network`.
+## Useful Commands
 
-### Frontend Proxy Configuration (`frontend/nginx.conf`)
+```bash
+# build and run the full stack
+docker compose up --build
 
-Nginx routes all API requests to the correct backend service:
+# stop all containers
+docker compose down
 
-```nginx
-server {
-    listen 80;
-    server_name localhost;
-    root /usr/share/nginx/html;
-    index index.html;
+# rebuild only the frontend
+docker compose build homepage-frontend
 
-    location /api/cs/ {
-        proxy_pass http://homepage-backend-cs:5202;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    location /api/cpp/ {
-        proxy_pass http://homepage-backend-cpp:10000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    location /api/go/ {
-        proxy_pass http://homepage-backend-go:8080;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
+# run backend services only
+docker compose up -d homepage-backend-cs homepage-backend-cpp homepage-backend-go
 ```
