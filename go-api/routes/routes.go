@@ -42,6 +42,7 @@ func SetupRoutes() error {
 	r.Post("/api/go/comments", routesImplementation.CommentsAddRoute(logger, db))
 	r.Get("/api/go/comments", routesImplementation.CommentsGetAllRoute(logger, db))
 
+
 	r.Post("/api/go/hash/sha512", routesImplementation.Sha512Route(logger))
 	r.Post("/api/go/hash/md5", routesImplementation.Md5Route(logger))
 	r.Post("/api/go/hash/sha256", routesImplementation.Sha256Route(logger))
