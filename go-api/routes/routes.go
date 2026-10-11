@@ -2,6 +2,7 @@ package routes
 
 import (
 	"errors"
+	"fmt"
 	"go-api/routesImplementation"
 	"log"
 	"net/http"
@@ -16,8 +17,14 @@ func SetupRoutes() error {
 	if err := os.MkdirAll("./logs", 0750); err != nil {
 		return err
 	}
+	now := time.Now()
+
+	filename := fmt.Sprintf("api-%04d-%02d-%02d_%02d-%02d-%02d.log",
+		now.Year(), now.Month(), now.Day(),
+		now.Hour(), now.Minute(), now.Second(),
+	)
 	file, err := os.OpenFile(
-		"./logs/api.log",
+		"./logs/"+filename,
 		os.O_CREATE|os.O_WRONLY|os.O_APPEND,
 		0640,
 	)
