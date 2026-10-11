@@ -9,6 +9,7 @@ import { ShoppingList } from './shopping-list/shopping-list';
 import { Encoding } from './encoding/encoding';
 import { Hashing } from './hashing/hashing';
 import { Comments } from './comments/comments';
+import { Bugs } from './bugs/bugs';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -40,6 +41,7 @@ describe('App', () => {
       'encoding',
       'hashing',
       'comments',
+      'bugs',
     ]);
     expect(routes.map((route) => route.component)).toEqual([
       Home,
@@ -49,6 +51,7 @@ describe('App', () => {
       Encoding,
       Hashing,
       Comments,
+      Bugs,
     ]);
   });
 });
