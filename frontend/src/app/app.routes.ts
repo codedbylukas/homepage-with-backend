@@ -6,6 +6,7 @@ import { ShoppingList } from './shopping-list/shopping-list';
 import { Encoding } from './encoding/encoding';
 import { Hashing } from './hashing/hashing';
 import { Comments } from './comments/comments';
+import { Bugs } from './bugs/bugs';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'encoding', component: Encoding },
   { path: 'hashing', component: Hashing },
   { path: 'comments', component: Comments },
+  { path: 'bugs', component: Bugs },
 ];

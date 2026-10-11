@@ -1,0 +1,24 @@
+<div class="all slide-in">
+  <div class="box">
+    <h1 class="center-text">Bugs</h1>
+    <p class="center-text">
+      Bitte geben Sie hier ein, wenn sie einen Bug auf dieser Seite gefunden haben.
+    </p>
+    <div class="center-div">
+      <button class="add" (click)="addBug()">+</button>
+    </div>
+    <div class="center-div comments-section">
+      @for (bug of bugs; track bug.id) {
+        <div class="item">
+          <h2 class="center-text">{{ bug.title }}</h2>
+          <p class="center-text">
+            {{ bug.description }}
+          </p>
+        </div>
+      } @empty {
+        <p class="empty">Keine Einträge für Bugs vorhanden.</p>
+      }
+    </div>
+    <app-home-btn></app-home-btn>
+  </div>
+</div>

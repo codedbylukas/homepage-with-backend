@@ -31,4 +31,11 @@ export class ApIModule {
     }
     return commentsApiEndpoint;
   }
+  static getApiBugs(): string {
+    let bugsApiEndpoint: string = '/api/go/bugs';
+    if (useDebugUrl) {
+      bugsApiEndpoint = 'http://localhost:8080/api/go/bugs';
+    }
+    return bugsApiEndpoint;
+  }
 }

@@ -41,6 +41,8 @@ func SetupRoutes() error {
 	r.Use(middleware.Recoverer)
 	r.Post("/api/go/comments", routesImplementation.CommentsAddRoute(logger, db))
 	r.Get("/api/go/comments", routesImplementation.CommentsGetAllRoute(logger, db))
+	r.Post("/api/go/bugs", routesImplementation.BugsAddRoute(logger, db))
+	r.Get("/api/go/bugs", routesImplementation.BugsGetAllRoute(logger, db))
 
 
 	r.Post("/api/go/hash/sha512", routesImplementation.Sha512Route(logger))

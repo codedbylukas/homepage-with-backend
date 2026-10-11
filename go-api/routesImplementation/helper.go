@@ -43,10 +43,15 @@ func InitDatabase(logger *log.Logger) (*sql.DB, error) {
 	logger.Println("Database connection initialized")
 
 	for _, statement := range []string{
-	`CREATE TABLE IF NOT EXISTS comments (
+		`CREATE TABLE IF NOT EXISTS comments (
 	id INTEGER PRIMARY KEY,
 	name TEXT NOT NULL,
 	comments TEXT NOT NULL
+	)`,
+		`CREATE TABLE IF NOT EXISTS bugs (
+	id INTEGER PRIMARY KEY,
+	title TEXT NOT NULL,
+	description TEXT NOT NULL
 	)`,
 	} {
 		if _, err := db.Exec(statement); err != nil {
@@ -58,4 +63,3 @@ func InitDatabase(logger *log.Logger) (*sql.DB, error) {
 
 	return db, nil
 }
-
